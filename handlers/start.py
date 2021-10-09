@@ -62,6 +62,6 @@ async def get_password(msg: Message, state: FSMContext):
         await msg.answer(user_already_exists)
 
 
-@dp.message_handler(content_types=ContentType.ANY)
-async def unknown_message(msg: Message):
-    await msg.reply(need_for_help_message, parse_mode=ParseMode.MARKDOWN)
+# @dp.message_handler(content_types=ContentType.ANY)
+# async def unknown_message(msg: Message):
+#     await msg.reply(need_for_help_message, parse_mode=ParseMode.MARKDOWN)

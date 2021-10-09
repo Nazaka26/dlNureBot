@@ -2,11 +2,7 @@ from aiogram import types
 from utils import utils
 from loader import dp
 from utils.scheduler import view_jobs
-
-
-@dp.message_handler(commands=['user_add'])
-async def add_user(msg: types.Message):
-    await utils.add_user(0, 'TEST_LOGIN', 'TEST_PSWD')
+from utils.utils import send_all_users
 
 
 @dp.message_handler(commands=['users_all'])
@@ -26,6 +22,12 @@ async def get_jobs(msg: types.Message):
     await msg.reply(a)
 
 
+@dp.message_handler(commands=['timetable'])
+async def get_my_timetable(msg: types.Message):
+    id = msg.chat.id
+    await msg.reply(id)
 
+@dp.message_handler(commands=['send_jobs'])
+async def send_all_jobs(msg: types.Message):
 
-
+    await send_all_users()

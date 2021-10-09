@@ -59,14 +59,13 @@ async def schedule_users_attendance():
         scheduler.add_job(job, trigger='date', run_date=time, args=[course])
 
 
-async def update_scheduler():
-    """
-    Updates scheduler according to today's events.
-    :return:
-    """
-    # scheduler.remove_all_jobs()
-
-    await schedule_users_attendance()
+# async def update_scheduler():
+#     """
+#     Updates scheduler according to today's events.
+#     :return:
+#     """
+#     # scheduler.remove_all_jobs()
+#     await schedule_users_attendance()
 
 
 async def run_jobs():
@@ -74,9 +73,13 @@ async def run_jobs():
     Starts all scheduler jobs.
     :return:
     """
-    job = update_scheduler
-    scheduler.add_job(job, trigger='cron', day=1, hour=5)
-    await update_scheduler()
+    # job = update_scheduler
+    # scheduler.add_job(job, trigger='cron', day=1, hour=5)
+    # await update_scheduler()
+
+    scheduler.remove_all_jobs()
+    await schedule_users_attendance()
+    scheduler.add_job(run_jobs, trigger='cron', day=1, hour=5)
 
 
 # fv
@@ -89,11 +92,11 @@ async def send_scheduled(dp: Dispatcher):
         id = stored_user.chat_id
 
 
-async def view_jobs():
+
+async def view_jobs() -> list:
     jobs = scheduler.get_jobs()
     for job in jobs:
-        print(job.next_run_time)
-    print(jobs)
+        print(job.name)
     return jobs
 
 

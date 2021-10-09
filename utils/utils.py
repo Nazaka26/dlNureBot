@@ -3,11 +3,12 @@ import logging
 from exceptions.db_exceptions import UserAlreadyExists
 from exceptions.moodle_exceptions import MoodleWrongCredentials
 # from loader import scheduler
+from loader import bot
 
 from models import db
 from moodle_new.User import User
 from repository.UserRepository import UserRepository
-
+from utils.scheduler import view_jobs
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,22 @@ async def login(chat_id):
 async def show_stored_users():
     return await UserRepository.all()
 
+
+async def get_all_users_ids():
+    users = await show_stored_users()
+    ids = []
+    for user in users:
+        ids.append(user.chat_id)
+    return ids
+
+
+async def send_all_users():
+    jobs = await view_jobs()
+    users_ids = await get_all_users_ids()
+    for id in users_ids:
+        for job in jobs:
+            name = job.name
+            await bot.send_message(id, name)
 
 
 
