@@ -14,16 +14,24 @@ class Timetable:
     def __repr__(self):
         return repr(self.timetable)
 
+    def view(self):
+
+        view = {}
+        for time in self.timetable:
+            course_name = self.timetable[time].course_info['fullname']
+            view_el = str(time) + ' ' + str(course_name)
+            print(type(time))
+            print(type(time.date))
+            view.update({time.date: view_el})
+        print(view)
+        return view
+
+
     def clear(self):
         return self.timetable.clear()
 
     def items(self):
         return self.timetable.items()
-
-    # def add(self, user_calendar: Calendar):
-    #     user_classes = user_calendar.get_current_day_view()
-    #     for class_time, course in user_classes.items():
-    #         self.timetable.update({class_time: course})
 
 
     def add(self, user_classes):

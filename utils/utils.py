@@ -6,9 +6,10 @@ from exceptions.moodle_exceptions import MoodleWrongCredentials
 from loader import bot
 
 from models import db
+from moodle_new.Timetable import Timetable
 from moodle_new.User import User
 from repository.UserRepository import UserRepository
-from utils.scheduler import view_jobs
+from utils.scheduler import view_jobs, get_users_timetable
 
 logger = logging.getLogger(__name__)
 
@@ -52,12 +53,12 @@ async def get_all_users_ids():
 
 
 async def send_all_users():
-    jobs = await view_jobs()
     users_ids = await get_all_users_ids()
     for id in users_ids:
-        for job in jobs:
-            name = job.name
-            await bot.send_message(id, name)
+        timetable = await get_users_timetable(id)
+
+        for el in timetable.view():
+            await bot.send_message(id, el)
 
 
 

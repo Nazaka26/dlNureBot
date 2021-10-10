@@ -29,5 +29,4 @@ async def get_my_timetable(msg: types.Message):
 
 @dp.message_handler(commands=['send_jobs'])
 async def send_all_jobs(msg: types.Message):
-
     await send_all_users()

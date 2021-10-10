@@ -1,12 +1,8 @@
 import logging
-from datetime import datetime
 from datetime import timedelta
 from random import randrange
 
 from aiogram import Dispatcher
-from apscheduler.triggers.combining import AndTrigger
-from apscheduler.triggers.date import DateTrigger
-from apscheduler.triggers.interval import IntervalTrigger
 from loader import scheduler
 from moodle_new.Calendar import Calendar
 from moodle_new.Timetable import Timetable
@@ -23,12 +19,17 @@ async def add_random_delay(time, max_delay):
     return time + time_delay
 
 
-async def get_users_timetable() -> Timetable:
+async def get_users_timetable(*chat_id) -> Timetable:
     """
     Gets all today's events for each of stored_users.
     :return: Timetable
     """
-    stored_users = await UserRepository.all()
+    if chat_id:
+        stored_users = await UserRepository.get(chat_id)
+        stored_users = [stored_users]
+    else:
+        stored_users = await UserRepository.all()
+
     timetable = Timetable()
     for stored_user in stored_users:  # todo: incapsulate in moodle module
         moodle_user = User(stored_user.login, stored_user.pswd)
